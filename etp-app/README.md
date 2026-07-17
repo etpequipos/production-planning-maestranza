@@ -46,7 +46,16 @@ NEXT_PUBLIC_SUPABASE_URL="https://placeholder.supabase.co"
 NEXT_PUBLIC_SUPABASE_ANON_KEY="placeholder-anon-key"
 ```
 
-For production, copy `.env.example` and fill in real Supabase credentials.
+For production, copy `.env.example` and fill in real values. See the comments in that file for a full description of every variable.
+
+### Access control — two independent mechanisms
+
+| Mechanism | What it controls | Where it lives |
+|---|---|---|
+| `ADMIN_EMAIL_EXCEPTIONS` | Who can **register and log in** (bypasses corporate domain check) | Hardcoded in `src/lib/validations.ts` |
+| `ADMIN_EMAILS` | Who has **administrator permissions** (`user.isAdmin`) | Environment variable |
+
+These are completely independent. Being in `ADMIN_EMAIL_EXCEPTIONS` does not grant admin permissions. Being in `ADMIN_EMAILS` does not bypass the domain check. A user can appear in both, neither, or only one of the two lists.
 
 ---
 
@@ -131,7 +140,23 @@ prisma/
 
 ## Deployment to Vercel
 
+All `.env*` files are gitignored — no environment file is uploaded to Vercel automatically. Every variable must be set manually in **Settings → Environment Variables**.
+
 1. Push the repository to GitHub.
 2. Import at [vercel.com](https://vercel.com).
-3. Add all production environment variables under **Settings → Environment Variables**.
+3. Add the following variables under **Settings → Environment Variables**:
+
+| Variable | Required | Notes |
+|---|---|---|
+| `DATABASE_URL` | Yes | Transaction pooler URL (pgbouncer) |
+| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Supabase anon/public key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Yes | Server-side only — enables user management |
+| `ADMIN_EMAILS` | Yes | Comma-separated list of admin emails. Controls `user.isAdmin`. Independent of `ADMIN_EMAIL_EXCEPTIONS` |
+| `ALLOW_PUBLIC_REGISTER` | Recommended | Set to `"false"` to disable self-registration |
+| `PLANNER_SERVICE_URL` | If using planner | URL of the planning microservice |
+| `PLANNER_SERVICE_TOKEN` | If using planner | Bearer token for the planning microservice |
+| `TZ` | Recommended | Set to `America/Santiago` |
+| `DEV_AUTH` | No | Must be absent or empty in production |
+
 4. Deploy — Vercel runs `npm run build` automatically.
