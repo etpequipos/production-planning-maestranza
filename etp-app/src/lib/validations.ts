@@ -4,6 +4,7 @@ export const ALLOWED_EMAIL_DOMAINS = [
   "equiposycamiones.cl",
   "pto.cl",
   "etpequipos.cl",
+  "centroequipos.cl",
 ] as const;
 
 export const ADMIN_EMAIL_EXCEPTIONS = [
