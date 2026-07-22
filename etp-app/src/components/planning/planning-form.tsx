@@ -207,7 +207,7 @@ const EDIT_SECTIONS: { title: string; fields: FieldDef[] }[] = [
     title: "Fechas y planificación",
     fields: [
       { name: "llegada", label: "Llegada", type: "date", hint: "Solo informativa" },
-      { name: "inicio", label: "Inicio", type: "date", hint: "Sin fecha → excluido de planificación", disabled: "true" },
+      { name: "inicio", label: "Inicio", type: "date", hint: "Sin fecha → excluido de planificación" },
       { name: "prioridad", label: "Prioridad (1=alta)", type: "number" },
     ],
   },
