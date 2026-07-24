@@ -836,6 +836,9 @@ def main():
     conn.commit()
     conn.close()
     print(f"Planning complete. {len(jobs)} jobs written to DB (run {new_run_id}).")
+    print("=" * 60)
+    print("PLANNER VERSION 2026-07-23 21:30")
+    print("=" * 60)
 
 
 if __name__ == "__main__":
